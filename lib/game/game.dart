@@ -4,8 +4,7 @@ import 'package:flame/input.dart';
 
 import '../dino.dart';
 
-class DinoGame extends FlameGame  with TapDetector{
-
+class DinoGame extends FlameGame with TapDetector {
   late DinoRun dinoRun;
   @override
   Future<void>? onLoad() async {
@@ -16,8 +15,8 @@ class DinoGame extends FlameGame  with TapDetector{
   }
 
   @override
-  void onTap() {
-   dinoRun.jump();
-    super.onTap();
+  void onTapDown(TapDownInfo info) {
+    super.onTapDown(info);
+    dinoRun.jump();
   }
 }
