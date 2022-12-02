@@ -1,13 +1,20 @@
 // ignore_for_file: unnecessary_this
 
+import 'dart:math';
+
 import 'package:dino_game/assets.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 
-const double groundHeight = 34;
+const double groundHeight = 46;
 
 class DinoRun extends SpriteAnimationComponent {
+  double speedY = 0.0;
+  double yMax = 0.0;
+
+  double gravity = 1000.0;
+
   // late Vector2 _position;
   DinoRun()
       : super(
@@ -45,33 +52,43 @@ class DinoRun extends SpriteAnimationComponent {
   }
 
   @override
-  set size(Vector2 size) {
-    // TODO: implement size
-    super.size = size;
-
-  
-  }
-
-  @override
-  set position(Vector2 position) {
-    position.x = 500;
-    position.y = 430;
-    super.position = position;
-  }
-
-  @override
   void onGameResize(Vector2 size) {
+    this.height = this.width = size.y / 5;
 
-    
-    // TODO: implement onGameResize
+    this.x = this.width;
+
+    this.y = size.y - this.height - groundHeight;
+
+    yMax = this.y;
+
+    y = size.y - groundHeight - height;
     super.onGameResize(size);
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    // position.x = width;
-    // position.y = height * 6.0 - groundHeight;
+
+    if (y < yMax) {
+      speedY += gravity * dt;
+      y += speedY * dt;
+    } else {
+      y = yMax;
+    }
+
+    this.y += speedY * dt;
+    if (isOnGround()) {
+      this.y = yMax;
+      speedY = 0.0;
+    }
+  }
+
+  void jump() {
+    this.speedY = -300;
+  }
+
+  bool isOnGround() {
+    return (this.y >= yMax);
   }
 }
 

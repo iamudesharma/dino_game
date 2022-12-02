@@ -9,10 +9,9 @@ import 'package:flame/components.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Flame.device.fullScreen();
+  await Flame.device.setLandscape();
 
   final game = DinoGame();
 
   runApp(GameWidget(game: game));
 }
-
-  

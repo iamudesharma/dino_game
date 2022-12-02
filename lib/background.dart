@@ -19,8 +19,8 @@ class BackGround extends ParallaxComponent {
           "parallax/plx-6.png",
         ),
       ],
-      baseVelocity: Vector2(100, 0),
-      velocityMultiplierDelta: Vector2(1, 0),
+      baseVelocity: Vector2(20, 0),
+      velocityMultiplierDelta: Vector2(1.8, 1.0),
       // repeat:
     );
 
