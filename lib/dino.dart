@@ -3,57 +3,63 @@
 import 'dart:math';
 
 import 'package:dino_game/assets.dart';
+import 'package:dino_game/enemy.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 
 const double groundHeight = 46;
 
-class DinoRun extends SpriteAnimationComponent {
+class Dino extends SpriteAnimationComponent {
   double speedY = 0.0;
   double yMax = 0.0;
 
   double gravity = 1000.0;
 
   // late Vector2 _position;
-  DinoRun()
+  Dino()
       : super(
           size: Vector2(100, 100),
           // position: Vector2.all(100),
           // position: Vector2(200, 430),
         );
+
   @override
   Future<void>? onLoad() async {
     final image = await Flame.images.load(Assets.images.dinoSpritesMortPNG);
-    animation = SpriteAnimation.fromFrameData(
-      image,
-      SpriteAnimationData.range(
-        start: 4,
-        end: 11,
-        amount: 24,
-        textureSize: Vector2(24, 24),
-        stepTimes: [
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-          0.1,
-        ],
-        // stepTime: 0.1,
-        // loop: true,
-      ),
-    );
+    // final image = await Flame.images.load(Assets.images.dinoSpritesMortPNG);
+
+    this.animation = SpriteAnimation.fromFrameData(
+        image,
+        SpriteAnimationData.range(
+          start: 4,
+          end: 11,
+          amount: 24,
+          textureSize: Vector2(24, 24),
+          stepTimes: [
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+          ],
+          // stepTime: 0.1,
+          // loop: true,
+        ));
+
     // this.position = _position;
 
     return super.onLoad();
   }
 
+  void hitDi() {}
+
   @override
   void onGameResize(Vector2 size) {
-    this.height = this.width = size.y / 5;
+    this.height = this.width = size.y / 4;
 
     this.x = this.width;
 
@@ -81,6 +87,12 @@ class DinoRun extends SpriteAnimationComponent {
       this.y = yMax;
       speedY = 0.0;
     }
+
+    this.children.whereType<Enemy>().forEach((e) {
+      if (this.distance(e) < 20) {
+        this.animation = DinoHit().animation;
+      }
+    });
   }
 
   void jump() {
@@ -127,3 +139,5 @@ class DinoHit extends SpriteAnimationComponent {
     return super.onLoad();
   }
 }
+
+
